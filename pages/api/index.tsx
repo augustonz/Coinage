@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const api=axios.create({baseURL:process.env.NEXT_PUBLIC_APIURL,headers:{'x-acess-token':process.env.NEXT_PUBLIC_APIKEY}});
+const api=axios.create({baseURL:process.env.NEXT_PUBLIC_APIURL,headers:{'x-access-token':process.env.NEXT_PUBLIC_APIKEY}});
 
 
 

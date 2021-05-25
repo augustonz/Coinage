@@ -2,6 +2,11 @@ import { ReactElement } from 'react';
 import styles from './styles.module.css';
 import {coin} from '../';
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faCaretUp,faCaretDown} from '@fortawesome/free-solid-svg-icons';
+// @ts-ignore
+import AnimatedNumber from 'react-animated-number';
+
 export default function CoinLine({item}:{item:coin}) :ReactElement {
 
     return (
@@ -10,19 +15,26 @@ export default function CoinLine({item}:{item:coin}) :ReactElement {
             <img src={item.iconUrl} width='40px' height='40px'/>
         </div>
         <div style={{width:'20%'}}>
-            <p style={{color:item.color?item.color:'black'}}>
+            <p style={{color:item.color?item.color:'#303030'}}>
             {item.name}
             </p>
         </div>
-        <div style={{width:'40%',color:'#303030'}}>
+        <div style={{width:'35%',color:'#303030'}}>
             <p>
-                U${parseFloat(item.price).toFixed(2)}
+                $<AnimatedNumber
+                value={parseFloat(item.price)} 
+                duration={1000}
+                formatValue={(val:number)=>val.toFixed(2).toString()}/>
             </p>   
         </div>
-        <div style={{width:'30%'}}>
+        <div style={{width:'25%'}}>
+            {item.change?
             <p style={{color:parseFloat(item.change)>=0?'green':'red'}}>
-                {parseFloat(item.change.slice(1)).toFixed(2)}%
-            </p>
+                <FontAwesomeIcon className={styles.arrowIcon} icon={parseFloat(item.change)>=0?faCaretUp:faCaretDown}/>
+                <AnimatedNumber value={parseFloat(item.change)} 
+                duration={1000}
+                formatValue={(val:number)=>val.toFixed(2).toString()} />%
+            </p>:<p style={{color:'#303030'}}>---</p>}
         </div>
     </div>
     );

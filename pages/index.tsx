@@ -1,28 +1,55 @@
 import Head from 'next/head'
+import {useEffect,useState} from 'react';
+
 import {api} from './api/';
 import styles from '../styles/Home.module.css'
-import {useEffect,useState} from 'react';
-import CoinsTable, { coin } from '../components/CoinsTable';
 
-export default function Home({Coins,status}:{Coins:coin[],status:number}) {
+import CoinsTable, { coin } from '../components/CoinsTable';
+import MyButton from '../components/MyButton';
+
+export default function Home({Coins,error}:{Coins:coin[],error:boolean}) {
 
   const [coins,setCoins]=useState(Coins);
+  const [size,setSize]=useState(10);
+  const [Error,setError]=useState(error);
+  const [loading,setLoading]=useState(false);
 
   useEffect(()=>{
     const getCoins = setInterval(async function getCoinsData() {
-        const response = await (await fetch('/api/coins')).json();
-        setCoins(response.data.data.coins); 
-
-    },10000);
+      const response = await fetch(`/api/coins?size=${size}`);
+      const {data,error} = await response.json();
+      if (error) {
+        clearInterval(getCoins);
+        setError(true);
+        return;
+      } else {
+        setCoins(data.data.coins);
+      }
+      
+    },8000);
     return ()=>clearInterval(getCoins);
-  },[]);
+  },[size]);
+
+  async function loadMoreCoins() {
+    if (size<100){
+      setLoading(true);
+      setSize((size)=>size+10);
+      const response = await (await fetch(`/api/coins?size=${size+10}`)).json();
+      setCoins(response.data.data.coins); 
+      setLoading(false);
+      return {errorMsg:undefined};
+    } else {
+      return {errorMsg:'Max coins size reached'};
+    }
+    
+  }
 
   return (
     <div className={styles.container}>
       <Head>
         <title>Coinage</title>
         <meta name="description" content="Get up-to-date info on popular Cryptocurrencies!" />
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.ico" />
       </Head>
 
       <main className={styles.main}>
@@ -34,7 +61,11 @@ export default function Home({Coins,status}:{Coins:coin[],status:number}) {
           Take a look at the most famous Crypto currencies
         </p>
 
-        <CoinsTable coins={coins}/>
+        {Error?<h1>Oops. The site can't access the crypto API<br/> at the moment, come back later</h1>:
+        <>
+          <CoinsTable coins={coins}/>
+          <MyButton onClick={loadMoreCoins} loading={loading}>Load more</MyButton>
+        </>}
       </main>
 
 
@@ -46,9 +77,16 @@ export default function Home({Coins,status}:{Coins:coin[],status:number}) {
 }
 
 export async function getServerSideProps(context:any) {
-  const {data,headers,status} = await api.get('coins');
-  const Coins = data.data.coins;
-  return {
-    props: {Coins,status}, // will be passed to the page component as props
+  try{
+    const {data,headers,status} = await api.get('coins?limit=10');
+    const Coins = data.data.coins;
+    return {
+      props: {Coins,error:false}, // will be passed to the page component as props
+    }
+  } catch(error:any) {
+    console.log(error);
+    return {
+      props: {Coins:[],error:true}
+    }
   }
 }

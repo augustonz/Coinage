@@ -7,3 +7,17 @@
     border: 1px solid var(--dark-gray);
     box-shadow: 0 0 1rem var(--dark-gray);
 }
+
+.coinLine{
+    display: flex;
+    width: 100%;
+    flex-direction:row;
+    color: #303030
+}
+
+.coinLine div{
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    font-weight: bolder;
+}

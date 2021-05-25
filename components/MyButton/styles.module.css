@@ -1,0 +1,30 @@
+.myButton {
+    background-color: #252525;
+    padding: 1rem 2rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: large;
+    color: white;
+    outline: 0;
+    border: 0;
+    border-radius: 1rem;
+    cursor:pointer;
+    margin-top: 5px;
+}
+
+.disabledButton {
+    background-color: #2525256c;
+    color: #ffffff48;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.error {
+    color:red;
+    margin: 0;
+}
+
+.icon {
+    margin-left: 5px;
+}
