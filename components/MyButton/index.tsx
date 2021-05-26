@@ -1,10 +1,17 @@
-import { ReactChildren, useState } from 'react';
+import { ReactChildren, ReactElement, useState } from 'react';
 import styles from './styles.module.css';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faCircleNotch} from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export default function MyButton({onClick,children,loading}:{onClick:CallableFunction,loading:boolean,children:string | ReactChildren}) {
+interface buttonProps {
+    onClick: Function,
+    children: ReactElement | String,
+    loading: boolean,
+    icon: IconProp
+}
+
+export default function MyButton({onClick,children,loading,icon}:buttonProps) {
 
     const [errorMsg,setErrorMsg] = useState();
 
@@ -17,8 +24,8 @@ export default function MyButton({onClick,children,loading}:{onClick:CallableFun
     <div className={styles.container}> 
         {errorMsg && <p className={styles.error}>{errorMsg}</p>}
         <button disabled={loading} className={loading?styles.myButton+' '+ styles.disabledButton:styles.myButton} onClick={handleClick}>
+            <FontAwesomeIcon className={styles.icon} icon={loading?'circle-notch':icon} spin={loading}/>
             {loading?'Loading...':children}
-            {loading && <FontAwesomeIcon className={styles.icon} icon={faCircleNotch} spin/>}
         </button>
     </div>
     );

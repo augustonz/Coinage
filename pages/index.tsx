@@ -26,7 +26,7 @@ export default function Home({Coins,error}:{Coins:coin[],error:boolean}) {
         setCoins(data.data.coins);
       }
       
-    },8000);
+    },10000);
     return ()=>clearInterval(getCoins);
   },[size]);
 
@@ -64,7 +64,7 @@ export default function Home({Coins,error}:{Coins:coin[],error:boolean}) {
         {Error?<h1>Oops. The site can't access the crypto API<br/> at the moment, come back later</h1>:
         <>
           <CoinsTable coins={coins}/>
-          <MyButton onClick={loadMoreCoins} loading={loading}>Load more</MyButton>
+          <MyButton onClick={loadMoreCoins} loading={loading} icon='arrow-down'>Load more</MyButton>
         </>}
       </main>
 
@@ -84,7 +84,6 @@ export async function getServerSideProps(context:any) {
       props: {Coins,error:false}, // will be passed to the page component as props
     }
   } catch(error:any) {
-    console.log(error);
     return {
       props: {Coins:[],error:true}
     }

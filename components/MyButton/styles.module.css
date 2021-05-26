@@ -1,6 +1,6 @@
 .myButton {
     background-color: #252525;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 1rem 1rem;
     font-family: 'Roboto', sans-serif;
     font-size: large;
     color: white;
@@ -26,5 +26,6 @@
 }
 
 .icon {
-    margin-left: 5px;
+    margin-left: 0.5rem;
+    margin-right: 10px;
 }
