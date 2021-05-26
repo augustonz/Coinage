@@ -24,7 +24,7 @@ export default function CoinLine({item}:{item:coin}) :ReactElement {
                 $<AnimatedNumber
                 value={parseFloat(item.price)} 
                 duration={1000}
-                formatValue={(val:number)=>val.toFixed(2).toString()}/>
+                formatValue={(val:number)=>val.toFixed(2).toString().replace('.',',')}/>
             </p>   
         </div>
         <div style={{width:'25%'}}>
